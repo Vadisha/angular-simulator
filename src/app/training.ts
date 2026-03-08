@@ -80,4 +80,4 @@ const users: User[] = [
   },
 ];
 
-const filteredUsers: User[] = users.filter((user: User) => user.name === "Alice");
+const filteredUsers: User[] = users.filter((user: User):boolean  => user.name === "Alice");
