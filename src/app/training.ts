@@ -56,8 +56,6 @@ function removeChar(value: string, charToRemove: string): string {
   return value.split(charToRemove).join("");
 }
 
-console.log(removeChar("hello world", "l"));
-
 //10. Создать массив объектов на основе интерфейса с задания №6. Отфильтровать его по одному из параметров
 
 const users: User[] = [
@@ -80,4 +78,4 @@ const users: User[] = [
   },
 ];
 
-const filteredUsers: User[] = users.filter((user: User):boolean  => user.name === "Alice");
+const filteredUsers: User[] = users.filter((user: User): boolean  => user.name === "Alice");
