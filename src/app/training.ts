@@ -43,26 +43,21 @@ const users: IUser[] = [
 ];
 
 const filteredUsers: IUser[] = users.filter(
-  (user: IUser): boolean => user.name === "Alice"
+  (user: IUser) => user.name === "Alice"
 );
 
 // 3. Функция суммы двух чисел
 export function sum(a: number, b: number): number {
-  const result: number = a + b;
-  return result;
+  return a + b;
 }
 
 // 8. Функция форматирования строки
 function formatString(value: string, format: TextFormat): string {
   if (format === "uppercase") {
     return value.toUpperCase();
-  }
-
-  if (format === "lowercase") {
+  } else if (format === "lowercase") {
     return value.toLowerCase();
-  }
-
-  if (format === "capitalize") {
+  } else if (format === "capitalize") {
     return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
   }
 
