@@ -1,1 +1,67 @@
-<h1 style="display: flex; justify-content: center; font-family: sans-serif;">NGX SIMULATOR</h1>
+<div class="hero">
+  <div class="hero__overlay"></div>
+
+  <header class="hero__header">
+    <div class="hero__container">
+      <div class="hero__logo" aria-label="Логотип компании">
+        <img
+          class="hero__logoMark"
+          src="/assets/c__Users_redmi_AppData_Roaming_Cursor_User_workspaceStorage_54fa42bcbf719fe175c3931edea04cf8_images_Group-2ea7b248-e9a2-439f-ba40-993597d613f2.png"
+          alt="Логотип"
+        />
+        <span class="hero__logoText">{{ companyName }}</span>
+      </div>
+
+      <nav class="hero__nav" aria-label="Основное меню">
+        <a class="hero__navLink" href="#">Главная</a>
+        <a class="hero__navLink" href="#">Про тура</a>
+        <a class="hero__navLink" href="#">Программы тура</a>
+        <a class="hero__navLink" href="#">Стилисти</a>
+        <a class="hero__navLink" href="#">Блог</a>
+        <a class="hero__navLink" href="#">Контакты</a>
+      </nav>
+
+      <button class="hero__cta" type="button">Консультация</button>
+    </div>
+  </header>
+
+  <main class="hero__main">
+    <div class="hero__container hero__mainInner">
+      <h1 class="hero__title">НАСЛАДИСЬ ПРОГУЛКОЙ В ГОРАХ</h1>
+      <div class="hero__subtitle">С КОМАНДОЙ ЕДИНОМЫШЛЕННИКОВ</div>
+
+      <section class="hero__search" aria-label="Поиск программы">
+        <div class="hero__searchGrid">
+          <div class="hero__field">
+            <div class="hero__fieldLabel">Локация для тура</div>
+            <select class="hero__control" name="location">
+              <option selected disabled>Выберите локацию</option>
+              <option>Алтай</option>
+              <option>Кавказ</option>
+              <option>Саяны</option>
+            </select>
+          </div>
+
+          <div class="hero__field">
+            <div class="hero__fieldLabel">Дата похода</div>
+            <input class="hero__control" type="date" name="date" />
+          </div>
+
+          <div class="hero__field">
+            <div class="hero__fieldLabel">Участники</div>
+            <select class="hero__control" name="people">
+              <option selected disabled>Выберите число</option>
+              <option value="1">1 участник</option>
+              <option value="2">2 участника</option>
+              <option value="3">3 участника</option>
+            </select>
+          </div>
+
+          <div class="hero__searchButtonWrap">
+            <button class="hero__searchButton" type="button">Найти программу</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
