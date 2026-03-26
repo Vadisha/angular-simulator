@@ -6,8 +6,7 @@
 //  - заменить определенный элемент коллекции
 
 //Реализовать коллекцию с двумя разными источниками данных
-
-export interface CollectionDataSource<T> {
+export interface DataSource<T> {
   getAll(): T[];
   get(index: number): T | undefined;
   clear(): void;
@@ -15,7 +14,7 @@ export interface CollectionDataSource<T> {
   replace(index: number, value: T): void;
 }
 
-export class InMemoryCollectionSource<T> implements CollectionDataSource<T> {
+export class InMemorySource<T> implements DataSource<T> {
   private items: T[];
 
   constructor(initialItems: T[] = []) {
@@ -45,69 +44,55 @@ export class InMemoryCollectionSource<T> implements CollectionDataSource<T> {
   }
 }
 
-export class LocalStorageCollectionSource<T> implements CollectionDataSource<T> {
-  private storageKey: string;
-
-  constructor(storageKey: string, initialItems: T[] = []) {
-    this.storageKey = storageKey;
-
-    // Инициализируем хранилище один раз, если его ещё нет
-    if (typeof window !== 'undefined' && !window.localStorage.getItem(this.storageKey)) {
-      window.localStorage.setItem(this.storageKey, JSON.stringify(initialItems));
-    }
+// Для storage отдельный класс не нужен: возвращаем объект, реализующий DataSource<T>
+export function createLocalStorageDataSource<T>(
+  storageKey: string,
+  initialItems: T[] = []
+): DataSource<T> {
+  // Инициализируем хранилище один раз, если его ещё нет
+  if (typeof window !== 'undefined' && window.localStorage && !window.localStorage.getItem(storageKey)) {
+    window.localStorage.setItem(storageKey, JSON.stringify(initialItems));
   }
 
-  private load(): T[] {
-    if (typeof window === 'undefined') return [];
+  const load = (): T[] => {
+    if (typeof window === 'undefined' || !window.localStorage) return [];
 
-    const raw = window.localStorage.getItem(this.storageKey);
+    const raw = window.localStorage.getItem(storageKey);
     if (!raw) return [];
 
     try {
-      const parsed = JSON.parse(raw) as T[];
-      return Array.isArray(parsed) ? parsed : [];
+      const parsed: unknown = JSON.parse(raw);
+      return Array.isArray(parsed) ? (parsed as T[]) : [];
     } catch {
       return [];
     }
-  }
+  };
 
-  private save(items: T[]): void {
-    if (typeof window === 'undefined') return;
-    window.localStorage.setItem(this.storageKey, JSON.stringify(items));
-  }
+  const save = (items: T[]): void => {
+    if (typeof window === 'undefined' || !window.localStorage) return;
+    window.localStorage.setItem(storageKey, JSON.stringify(items));
+  };
 
-  getAll(): T[] {
-    return this.load();
-  }
-
-  get(index: number): T | undefined {
-    const items = this.load();
-    return items[index];
-  }
-
-  clear(): void {
-    this.save([]);
-  }
-
-  delete(index: number): void {
-    const items = this.load();
-    if (index < 0 || index >= items.length) return;
-
-    items.splice(index, 1);
-    this.save(items);
-  }
-
-  replace(index: number, value: T): void {
-    const items = this.load();
-    if (index < 0 || index >= items.length) return;
-
-    items[index] = value;
-    this.save(items);
-  }
+  return {
+    getAll: () => load(),
+    get: (index: number) => load()[index],
+    clear: () => save([]),
+    delete: (index: number) => {
+      const items = load();
+      if (index < 0 || index >= items.length) return;
+      items.splice(index, 1);
+      save(items);
+    },
+    replace: (index: number, value: T) => {
+      const items = load();
+      if (index < 0 || index >= items.length) return;
+      items[index] = value;
+      save(items);
+    },
+  };
 }
-
 export class Collection<T> {
-  constructor(private source: CollectionDataSource<T>) {}
+  constructor(private source: DataSource<T>) {}
 
   getAll(): T[] {
     return this.source.getAll();

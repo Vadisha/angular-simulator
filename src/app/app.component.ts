@@ -9,18 +9,18 @@ import { Color } from '../enums/Color';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-
-  companyName = 'РУМТИБЕТ';
+  companyName: string = 'РУМТИБЕТ';
 
   //3. Далее создать метод, которая сохраняет в локальное хранилище дату последнего захода на страницу. Вызывать ее в конструкторе.
-  
   private readonly lastVisitStorageKey = 'lastVisitDate';
+  //4. Далее создать метод, которая сохраняет в localStorage количество заходов на страницу. Вызывать ее в конструкторе.
+  private readonly visitCountStorageKey = 'visitCount';
 
   constructor() {
     this.saveLastVisitDate();
+    this.saveVisitCount();
   }
 
- 
   private saveLastVisitDate(): void {
     if (typeof window === 'undefined' || !window.localStorage) return;
 
@@ -28,27 +28,17 @@ export class AppComponent {
     window.localStorage.setItem(this.lastVisitStorageKey, nowIso);
   }
 
+  private saveVisitCount(): void {
+    if (typeof window === 'undefined' || !window.localStorage) return;
+
+    const raw = window.localStorage.getItem(this.visitCountStorageKey);
+    const prev = raw ? Number(raw) : 0;
+
+    const next = Number.isFinite(prev) ? prev + 1 : 1;
+    window.localStorage.setItem(this.visitCountStorageKey, String(next));
+  }
 
   isMainColor(color: Color): boolean {
-    return [Color.Red, Color.Green, Color.Blue].includes(color);
+    return [Color.RED, Color.GREEN, Color.BLUE].includes(color);
   }
-}
-
-//4. Далее создать метод, которая сохраняет в localStorage количество заходов на страницу.  Вызывать ее в конструкторе.
-
-private readonly visitCountStorageKey = 'visitCount';
-
-constructor() {
-  this.saveLastVisitDate();
-  this.saveVisitCount();
-}
-
-private saveVisitCount(): void {
-  if (typeof window === 'undefined' || !window.localStorage) return;
-
-  const raw = window.localStorage.getItem(this.visitCountStorageKey);
-  const prev = raw ? Number(raw) : 0;
-
-  const next = Number.isFinite(prev) ? prev + 1 : 1;
-  window.localStorage.setItem(this.visitCountStorageKey, String(next));
 }
