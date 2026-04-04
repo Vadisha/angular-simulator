@@ -6,7 +6,6 @@
 //  - заменить определенный элемент коллекции
 
 //Реализовать коллекцию с двумя разными источниками данных
-
 export interface DataSource<T> {
   getAll(): T[];
   get(index: number): T | undefined;
