@@ -16,10 +16,10 @@ interface IAdminUser extends IUser {
 type TextFormat = "uppercase" | "lowercase" | "capitalize";
 
 // 4. Переменная uploadStatus
-let uploadStatus: "loading" | "success" | "error";
+let uploadStatus: "loading" | "success" | "error" = "loading";
 
 // 5. Переменная textFormat
-let textFormat: TextFormat;
+let textFormat: TextFormat = "lowercase";
 
 // 10. Массив пользователей и фильтрация
 const users: IUser[] = [
@@ -53,15 +53,14 @@ export function sum(a: number, b: number): number {
 
 // 8. Функция форматирования строки
 function formatString(value: string, format: TextFormat): string {
-  if (format === "uppercase") {
-    return value.toUpperCase();
-  } else if (format === "lowercase") {
-    return value.toLowerCase();
-  } else if (format === "capitalize") {
-    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+  switch (format) {
+    case "uppercase":
+      return value.toUpperCase();
+    case "lowercase":
+      return value.toLowerCase();
+    case "capitalize":
+      return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
   }
-
-  return value;
 }
 
 // 9. Функция, удаляющая символ из строки
