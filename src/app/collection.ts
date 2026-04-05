@@ -14,9 +14,9 @@ export interface DataSource<T> {
   replace(index: number, value: T): void;
 }
 
-
-
 export class Collection<T> {
+  private items: T[] = [];
+
   constructor(private source: DataSource<T>) {}
 
   getAll(): T[] {
@@ -39,4 +39,3 @@ export class Collection<T> {
     this.source.replace(index, value);
   }
 }
-
